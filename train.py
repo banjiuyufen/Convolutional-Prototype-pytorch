@@ -67,8 +67,8 @@ test_data = dataset.MyDataset(txt=root + 'test.txt', transform=text_transforms)
 train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True, num_workers=32, pin_memory=True)
 test_loader = DataLoader(dataset=test_data, batch_size=batch_size, shuffle=False, num_workers=32, pin_memory=True)
 
-num_classes=7357
-#model = CPN_Net.HccrNet(num_classes=7356)
+num_classes=10
+#model = CPN_Net.HccrNet(num_classes)
 model = CPN_Net.HccrNet_no_BatchNorm(num_classes)
 model = weights_init(model)
 
@@ -172,7 +172,7 @@ def test(epoch):
     total = 0
     test_loss = 0
 
-    with torch.no_grad():  # 不用算梯度
+    with torch.no_grad(): 
         for batch_idx, data in enumerate(test_loader, 0):
             images, labels = data
             images, labels = images.to(device), labels.to(device)
@@ -207,5 +207,5 @@ if __name__ == '__main__':
        
         scheduler.step()
         torch.save({'model': model.state_dict()},
-                   "/" + str(epoch)  + ".pth")  # 保存模型
+                   "/" + str(epoch)  + ".pth")
  
